@@ -26,6 +26,9 @@ class PancreasDataSet(data.Dataset):
                 "label": label_path,
                 "name": name
             })
+        
+        print(self.files)
+        exit(0)
         print('{} images are loaded!'.format(len(self.img_ids)))
 
     def __len__(self):

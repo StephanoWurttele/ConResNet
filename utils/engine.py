@@ -7,13 +7,14 @@ import torch
 import torch.distributed as dist
 
 from utils.logger import get_logger
-from utils.pyt_utils import all_reduce_tensor, extant_file
+# from utils.pyt_utils import all_reduce_tensor, extant_file
+from utils.pyt_utils import extant_file
 
-try:
-    from apex.parallel import DistributedDataParallel, SyncBatchNorm
-except ImportError:
-    raise ImportError(
-        "Please install apex from https://www.github.com/nvidia/apex .")
+# try:
+#     from apex.parallel import DistributedDataParallel, SyncBatchNorm
+# except ImportError:
+#     raise ImportError(
+#         "Please install apex from https://www.github.com/nvidia/apex .")
 
 
 logger = get_logger()
@@ -37,18 +38,20 @@ class Engine(object):
 
         self.continue_state_object = self.args.continue_fpath
 
-        if 'WORLD_SIZE' in os.environ:
-            self.distributed = int(os.environ['WORLD_SIZE']) > 1
-            print("WORLD_SIZE is %d" % (int(os.environ['WORLD_SIZE'])))
-        if self.distributed:
-            self.local_rank = self.args.local_rank
-            self.world_size = int(os.environ['WORLD_SIZE'])
-            torch.cuda.set_device(self.local_rank)
-            dist.init_process_group(backend="nccl", init_method='env://')
-            self.devices = [i for i in range(self.world_size)]
-        else:
-            gpus = os.environ["CUDA_VISIBLE_DEVICES"]
-            self.devices =  [i for i in range(len(gpus.split(',')))] 
+        # if 'WORLD_SIZE' in os.environ:
+        #     self.distributed = int(os.environ['WORLD_SIZE']) > 1
+        #     print("WORLD_SIZE is %d" % (int(os.environ['WORLD_SIZE'])))
+        # if self.distributed:
+        #     self.local_rank = self.args.local_rank
+        #     self.world_size = int(os.environ['WORLD_SIZE'])
+        #     torch.cuda.set_device(self.local_rank)
+        #     dist.init_process_group(backend="nccl", init_method='env://')
+        #     self.devices = [i for i in range(self.world_size)]
+        # else:
+        os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+        gpus = os.environ["CUDA_VISIBLE_DEVICES"]
+        self.devices =  [i for i in range(len(gpus.split(',')))] 
+        # finish else
 
     def inject_default_parser(self):
         p = self.parser
@@ -61,7 +64,8 @@ class Engine(object):
 
     def data_parallel(self, model):
         if self.distributed:
-            model = DistributedDataParallel(model)
+            # model = DistributedDataParallel(model)
+            print("ahio1")
         else:
             model = torch.nn.DataParallel(model)
         return model
@@ -109,7 +113,8 @@ class Engine(object):
 
     def all_reduce_tensor(self, tensor, norm=True):
         if self.distributed:
-            return all_reduce_tensor(tensor, world_size=self.world_size, norm=norm)
+            # return all_reduce_tensor(tensor, world_size=self.world_size, norm=norm)
+            print("ahio2")
         else:
             return torch.mean(tensor)
 
