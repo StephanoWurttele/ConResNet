@@ -72,7 +72,6 @@ def adjust_learning_rate(optimizer, i_iter, lr, num_steps, power):
     optimizer.param_groups[0]['lr'] = lr
     return lr
 
-
 def dice_score(preds, labels):
     assert preds.shape[0] == labels.shape[0], "predict & target batch size don't match"
     predict = preds.contiguous().view(preds.shape[0], -1)
@@ -84,7 +83,6 @@ def dice_score(preds, labels):
     dice = 2*num / den
 
     return dice.mean()
-
 
 def compute_dice_score(preds, labels):
 
@@ -100,7 +98,6 @@ def compute_dice_score(preds, labels):
     dice_WT = dice_score(pred_WT, label_WT).cpu().data.numpy()
     dice_TC = dice_score(pred_TC, label_TC).cpu().data.numpy()
     return dice_ET, dice_WT, dice_TC
-
 
 def predict_sliding(net, imagelist, tile_size, classes):
     image, image_res = imagelist
@@ -141,7 +138,6 @@ def predict_sliding(net, imagelist, tile_size, classes):
 
     full_probs /= count_predictions
     return full_probs
-
 
 def validate(input_size, model, ValLoader, num_classes):
     # start to validate
@@ -210,7 +206,6 @@ def main():
 
         loss_D = loss.DiceLoss4BraTS().to(device)
         loss_BCE = loss.BCELoss4BraTS().to(device)
-
         loss_B = loss.BCELossBoud().to(device)
 
         if not os.path.exists(args.snapshot_dir):

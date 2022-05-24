@@ -1,0 +1,22 @@
+Creamos test PancreasInput sacando código de train_conresnet.
+
+Cambiamos el código que usaba el BraTSDataSet para que funcione con el PancreasDatSet
+
+Para ello removimos y modificamos algunos argumentos que se recibían y definimos el siguiente comando:
+
+python testPancreasInput.py --data_dir=dataset/ --train_list=list/train_list.txt --val_list=list/val_list.txt --snapshot_dir=results/ --input_size=64,120,120 --batch_size=2 --num_gpus=1 --num_steps=40000 --val_pred_every=2000 --learning_rate=1e-4 --num_classes=3 --num_workers=4 --random_mirror=True --random_scale=True
+
+train_list y val_list deben contener los nombres de los archivos usados para entrenamiento y para validación.
+Hicimos una separación 70/30, por ejemplo:
+train_list.txt:
+PANCREAS_0001
+PANCREAS_0002
+PANCREAS_0003
+PANCREAS_0004
+PANCREAS_0005
+PANCREAS_0006
+PANCREAS_0007
+val_list.txt:
+PANCREAS_0008
+PANCREAS_0009
+PANCREAS_0010

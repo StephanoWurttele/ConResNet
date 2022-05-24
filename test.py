@@ -95,8 +95,6 @@ def dice_score(preds, labels):
 
     return dice.mean()
 
-
-
 def main():
 
     args = get_arguments()

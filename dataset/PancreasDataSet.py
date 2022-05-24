@@ -219,4 +219,3 @@ class PancreasValDataSet(data.Dataset):
         image_res = np.abs(image_res)
 
         return image.copy(), image_res.copy(), label.copy(), np.array(size), name
-

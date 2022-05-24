@@ -47,7 +47,6 @@ class DiceLoss4BraTS(nn.Module):
 
         return total_loss/(target.shape[1]-1 if self.ignore_index!=None else target.shape[1])
 
-
 class BCELoss4BraTS(nn.Module):
     def __init__(self, ignore_index=None, **kwargs):
         super(BCELoss4BraTS, self).__init__()
@@ -75,7 +74,6 @@ class BCELoss4BraTS(nn.Module):
                 total_loss += bce_loss
 
         return total_loss.mean()
-
 
 class BCELossBoud(nn.Module):
     def __init__(self, weight=None, ignore_index=None, **kwargs):
